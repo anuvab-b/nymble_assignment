@@ -2,9 +2,8 @@ part of 'home_bloc.dart';
 
 class HomeEvent {}
 
-class OnHomeInit extends HomeEvent{
+class OnHomeInit extends HomeEvent {}
 
-}
 class ListItemPress extends HomeEvent {
   int itemIndex;
 
@@ -12,7 +11,10 @@ class ListItemPress extends HomeEvent {
 }
 
 class ListItemLikePress extends HomeEvent {
-  int itemIndex;
+  bool isLiked;
+  String url;
+  int index;
 
-  ListItemLikePress({required this.itemIndex});
+  ListItemLikePress(
+      {required this.index, required this.url, required this.isLiked});
 }

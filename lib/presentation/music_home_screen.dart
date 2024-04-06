@@ -5,6 +5,7 @@ import 'package:nymble_assignment/bloc/home/home_bloc.dart';
 import 'package:nymble_assignment/bloc/player/player_bloc.dart';
 import 'package:nymble_assignment/domain/music_list_model.dart';
 import 'package:nymble_assignment/presentation/list_tile.dart';
+import 'package:nymble_assignment/presentation/music_details_screen.dart';
 
 class MusicHomeScreen extends StatefulWidget {
   const MusicHomeScreen({super.key});
@@ -51,22 +52,27 @@ class _MusicHomeScreenState extends State<MusicHomeScreen> {
                     itemBuilder: (ctx, index) {
                       MusicModel musicModel = state.musicList[index];
                       return ListTileWidget(
-                          title: musicModel.title,
-                          artist: musicModel.artist,
-                          cover: musicModel.coverUrl,
-                          onTap: () {
-                            homeBloc.add(ListItemPress(itemIndex: index));
-                            playerBloc.add(PlayerStartOrResume(
-                                url: homeBloc.state.musicList[index].url,
-                                index: index));
-                            // Navigator.of(context).push(MaterialPageRoute(
-                            //     builder: (context) => MusicDetailsScreen(
-                            //         musicModel: musicModel)));
-                          });
+                        musicModel: musicModel,
+                        onTap: () {
+                          // homeBloc.add(ListItemPress(itemIndex: index));
+                          // playerBloc.add(PlayerStartOrResume(
+                          //     url: homeBloc.state.musicList[index].url,
+                          //     index: index));
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  MusicDetailsScreen(musicModel: musicModel)));
+                        },
+                        onHeartTap: () {
+                          homeBloc.add(ListItemLikePress(
+                              index: index,
+                              isLiked: musicModel.isLiked,
+                              url: musicModel.url));
+                        },
+                      );
                     },
                     itemCount: state.musicList.length,
                   )),
-                  if (state.selectedIndex != -1)
+                  if (state.selectedIndex != null && state.selectedIndex!=-1)
                     BlocBuilder<PlayerBloc, MyPlayerState>(
                       builder: (context, mState) {
                         return Container(

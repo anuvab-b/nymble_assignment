@@ -21,10 +21,26 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   onListItemLikePress(ListItemLikePress event, Emitter<HomeState> emit) {
-    List<MusicModel> favourites = state.favouritesList;
-    favourites.add(state.musicList[event.itemIndex]);
-    emit(state.copyWith(
-        selectedIndex: event.itemIndex, favouritesList: favourites));
+    List<String> favourites = state.favouritesList;
+    if (!event.isLiked) {
+      favourites.add(state.musicList[event.index].url);
+    } else {
+      favourites.removeWhere((element) => element == event.url);
+    }
+    // List results = await Future.wait(
+    //     [musicRepository.getMusicList(), musicRepository.getFavouritesList()]);
+    List<MusicModel> musicList = state.musicList;
+    // List<MusicModel> favouritesMusicList = results[1];
+    // List<String> favourites =
+    // favouritesMusicList.map((e) => e.coverUrl).toList();
+    for (var music in musicList) {
+      if (favourites.contains(music.url)) {
+        music.isLiked = true;
+      } else {
+        music.isLiked = false;
+      }
+    }
+    emit(state.copyWith(favouritesList: favourites));
   }
 
   onListInit(OnHomeInit event, Emitter<HomeState> emit) async {
@@ -32,7 +48,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     List results = await Future.wait(
         [musicRepository.getMusicList(), musicRepository.getFavouritesList()]);
     List<MusicModel> musicList = results[0];
-    List<MusicModel> favourites = results[1];
+    List<MusicModel> favouritesMusicList = results[1];
+    List<String> favourites = favouritesMusicList.map((e) => e.url).toList();
+    for (var music in musicList) {
+      if (favourites.contains(music.url)) {
+        music.isLiked = true;
+      }
+    }
     emit(HomeSuccess(
         selectedIndex: -1, musicList: musicList, favouritesList: favourites));
   }

@@ -5,7 +5,8 @@ import 'package:nymble_assignment/domain/music_list_model.dart';
 class MusicDetailsScreen extends StatelessWidget {
   final MusicModel musicModel;
 
-  const MusicDetailsScreen({Key? key, required this.musicModel}) : super(key: key);
+  const MusicDetailsScreen({Key? key, required this.musicModel})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,18 +21,21 @@ class MusicDetailsScreen extends StatelessWidget {
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Stack(
                   children: [
-                    CachedNetworkImage(
-                        height: 400,
-                        width: MediaQuery.of(context).size.width,
-                        fit: BoxFit.fill,
-                        progressIndicatorBuilder: (context, url, progress) =>
-                            Center(
-                              child: CircularProgressIndicator(
-                                value: progress.progress,
-                                color: Theme.of(context).primaryColorLight,
+                    Hero(
+                      tag: musicModel.url,
+                      child: CachedNetworkImage(
+                          height: 400,
+                          width: MediaQuery.of(context).size.width,
+                          fit: BoxFit.fill,
+                          progressIndicatorBuilder: (context, url, progress) =>
+                              Center(
+                                child: CircularProgressIndicator(
+                                  value: progress.progress,
+                                  color: Theme.of(context).primaryColorLight,
+                                ),
                               ),
-                            ),
-                        imageUrl: musicModel.coverUrl),
+                          imageUrl: musicModel.coverUrl),
+                    ),
                     Positioned.fill(
                         child: Align(
                             alignment: Alignment.bottomLeft,

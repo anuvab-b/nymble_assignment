@@ -41,6 +41,7 @@ dependencies:
   flutter_svg: 1.1.6
   get_it: 7.6.0
   google_sign_in: 6.1.5
+  material_design_icons_flutter:
   uuid: 3.0.7
 dev_dependencies:
 
