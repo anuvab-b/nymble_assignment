@@ -28,6 +28,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  audioplayers: 4.0.0
   cached_network_image: 3.2.3
   cloud_firestore: 4.5.0
   cupertino_icons: ^1.0.2
@@ -38,8 +39,7 @@ dependencies:
   flutter_secure_storage: 8.0.0
   get_it: 7.6.0
   google_sign_in: 6.1.5
-  uuid: 4.0.0
-
+  uuid: 3.0.7
 dev_dependencies:
 
   # The "flutter_lints" package below contains a set of recommended lints to
@@ -64,15 +64,15 @@ flutter:
   assets:
     - assets/icons/
     - assets/json/
-  fonts:
-    - family: Poppins
-      fonts:
-        - asset: assets/fonts/Poppins-Black.ttf
-        - asset: assets/fonts/Poppins-Bold.ttf
-        - asset: assets/fonts/Poppins-ExtraBold.ttf
-        - asset: assets/fonts/Poppins-ExtraLight.ttf
-        - asset: assets/fonts/Poppins-Light.ttf
-        - asset: assets/fonts/Poppins-Medium.ttf
-        - asset: assets/fonts/Poppins-Regular.ttf
-        - asset: assets/fonts/Poppins-SemiBold.ttf
-        - asset: assets/fonts/Poppins-Thin.ttf
+#  fonts:
+#    - family: Poppins
+#      fonts:
+#        - asset: assets/fonts/Poppins-Black.ttf
+#        - asset: assets/fonts/Poppins-Bold.ttf
+#        - asset: assets/fonts/Poppins-ExtraBold.ttf
+#        - asset: assets/fonts/Poppins-ExtraLight.ttf
+#        - asset: assets/fonts/Poppins-Light.ttf
+#        - asset: assets/fonts/Poppins-Medium.ttf
+#        - asset: assets/fonts/Poppins-Regular.ttf
+#        - asset: assets/fonts/Poppins-SemiBold.ttf
+#        - asset: assets/fonts/Poppins-Thin.ttf
