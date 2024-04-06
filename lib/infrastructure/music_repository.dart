@@ -20,4 +20,16 @@ class MusicRepository implements IMusicRepository {
       throw Exception(e);
     }
   }
+
+  @override
+  Future<List<MusicModel>> getFavouritesList() async {
+
+    return <MusicModel>[];
+  }
+
+  @override
+  Future<List<MusicModel>> updateFavourites(List<MusicModel> musicList) {
+    // TODO: implement updateFavourites
+    throw UnimplementedError();
+  }
 }

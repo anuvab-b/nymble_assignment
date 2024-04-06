@@ -1,10 +1,14 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nymble_assignment/bloc/home/home_bloc.dart';
 import 'package:nymble_assignment/bloc/login/login_bloc.dart';
+import 'package:nymble_assignment/bloc/player/player_bloc.dart';
 import 'package:nymble_assignment/bloc/signup/signup_bloc.dart';
 import 'package:nymble_assignment/bloc/splash/splash_bloc.dart';
 import 'package:nymble_assignment/domain/i_auth_repository.dart';
+import 'package:nymble_assignment/domain/i_music_repository.dart';
 import 'package:nymble_assignment/presentation/music_home_screen.dart';
 import 'package:nymble_assignment/service_locator.dart';
 import 'package:nymble_assignment/utils/route_names.dart';
@@ -32,6 +36,12 @@ class MyApp extends StatelessWidget {
         BlocProvider(
             create: (BuildContext context) =>
                 LoginBloc(getIt.get<IAuthRepository>())),
+        BlocProvider(
+            create: (BuildContext context) =>
+                HomeBloc(getIt.get<IMusicRepository>())),
+        BlocProvider(
+            create: (BuildContext context) =>
+                PlayerBloc(getIt.get<AudioPlayer>())),
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
