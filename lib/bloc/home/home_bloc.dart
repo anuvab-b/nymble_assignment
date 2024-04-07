@@ -19,7 +19,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   onListItemPress(ListItemPress event, Emitter<HomeState> emit) {
-    emit(state.copyWith(selectedIndex: event.itemIndex));
+    emit(state.copyWith(selectedModel: event.selectedModel));
   }
 
   onListItemLikePress(ListItemLikePress event, Emitter<HomeState> emit) async {
@@ -99,7 +99,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         }
       }
       emit(HomeSuccess(
-          selectedIndex: -1,
+          selectedModel: null,
           musicList: musicList,
           favouritesList: favouritesMusicList));
     } catch (e) {

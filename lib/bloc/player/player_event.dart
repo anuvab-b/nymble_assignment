@@ -3,14 +3,14 @@ part of 'player_bloc.dart';
 class PlayerEvent {}
 
 class PlayerOnPaused extends PlayerEvent {
-  int index;
+  MusicModel selectedModel;
 
-  PlayerOnPaused({required this.index});
+  PlayerOnPaused({required this.selectedModel});
 }
 
 class PlayerStartOrResume extends PlayerEvent {
   String url;
-  int index;
+  MusicModel selectedModel;
 
-  PlayerStartOrResume({required this.url,required this.index});
+  PlayerStartOrResume({required this.url,required this.selectedModel});
 }

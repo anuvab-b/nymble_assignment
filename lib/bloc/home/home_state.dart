@@ -3,16 +3,16 @@ part of 'home_bloc.dart';
 class HomeState {
   final List<MusicModel> musicList;
   final List<MusicModel> favouritesList;
-  final int? selectedIndex;
+  final MusicModel? selectedModel;
 
-  const HomeState({this.selectedIndex,required this.musicList,required this.favouritesList});
+  const HomeState({this.selectedModel,required this.musicList,required this.favouritesList});
 
   HomeState copyWith(
       {List<MusicModel>? musicList,
-      int? selectedIndex,
+        MusicModel? selectedModel,
       List<MusicModel>? favouritesList}) {
     return HomeState(
-        selectedIndex: selectedIndex ?? this.selectedIndex,
+        selectedModel: selectedModel ?? this.selectedModel,
         musicList: musicList ?? this.musicList,
         favouritesList: favouritesList ?? this.favouritesList);
   }
@@ -27,15 +27,15 @@ class HomeInitial extends HomeState {
 }
 
 class HomeSuccess extends HomeState {
-  HomeSuccess({super.selectedIndex, required super.musicList, required super.favouritesList});
+  HomeSuccess({super.selectedModel, required super.musicList, required super.favouritesList});
 
   @override
   HomeSuccess copyWith(
       {List<MusicModel>? musicList,
-      int? selectedIndex,
+        MusicModel? selectedModel,
       List<MusicModel>? favouritesList}) {
     return HomeSuccess(
-        selectedIndex: selectedIndex ?? this.selectedIndex,
+        selectedModel: selectedModel ?? this.selectedModel,
         musicList: musicList ?? this.musicList,
         favouritesList: favouritesList ?? this.favouritesList);
   }

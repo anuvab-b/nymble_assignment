@@ -2,24 +2,24 @@ part of 'player_bloc.dart';
 
 class MyPlayerState {
   final bool isPlaying;
-  final int selectedIndex;
+  final MusicModel? selectedModel;
   Duration duration;
   Duration position;
 
   MyPlayerState(
       {required this.isPlaying,
-      required this.selectedIndex,
+      required this.selectedModel,
       required this.duration,
       required this.position});
 
   MyPlayerState copyWith(
       {bool? isPlaying,
-      int? selectedIndex,
+      MusicModel? selectedModel,
       Duration? duration,
       Duration? position}) {
     return MyPlayerState(
         isPlaying: isPlaying ?? this.isPlaying,
-        selectedIndex: selectedIndex ?? this.selectedIndex,
+        selectedModel: selectedModel ?? this.selectedModel,
         position: position ?? this.position,
         duration: duration ?? this.duration);
   }
@@ -28,7 +28,7 @@ class MyPlayerState {
 class PlayerInit extends MyPlayerState {
   PlayerInit(
       {required super.isPlaying,
-      required super.selectedIndex,
+      required super.selectedModel,
       required super.duration,
       required super.position});
 }
@@ -36,7 +36,7 @@ class PlayerInit extends MyPlayerState {
 class PlayerPlay extends MyPlayerState {
   PlayerPlay(
       {required super.isPlaying,
-      required super.selectedIndex,
+      required super.selectedModel,
       required super.duration,
       required super.position});
 }

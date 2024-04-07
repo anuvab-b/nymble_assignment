@@ -5,9 +5,9 @@ class HomeEvent {}
 class OnHomeInit extends HomeEvent {}
 
 class ListItemPress extends HomeEvent {
-  int itemIndex;
+  MusicModel selectedModel;
 
-  ListItemPress({required this.itemIndex});
+  ListItemPress({required this.selectedModel});
 }
 
 class ListItemLikePress extends HomeEvent {

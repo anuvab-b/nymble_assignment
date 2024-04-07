@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -45,7 +46,7 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
               Expanded(
                   child: state.favouritesList.isNotEmpty
                       ? ListView.builder(
-                    physics: const BouncingScrollPhysics(),
+                          physics: const BouncingScrollPhysics(),
                           itemBuilder: (ctx, index) {
                             MusicModel musicModel = state.favouritesList[index];
                             return ListTileWidget(
@@ -84,7 +85,8 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                               const Padding(
                                 padding: EdgeInsets.all(16.0),
                                 child: CommonText(
-                                    value: "Don't forget to bookmark the songs you like the most so that you can easily find those here",
+                                    value:
+                                        "Don't forget to bookmark the songs you like the most so that you can easily find those here",
                                     textColor: kBodyTextColorDark,
                                     fontWeight: FontWeight.w400,
                                     maxLines: 3,
@@ -93,13 +95,15 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                             ],
                           ),
                         )),
-              if (state.selectedIndex != null && state.selectedIndex != -1)
+              if (state.selectedModel != null)
                 BlocBuilder<PlayerBloc, MyPlayerState>(
                   builder: (context, mState) {
                     return Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        boxShadow: [
+                      margin: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
+                      decoration: BoxDecoration(
+                        color: AppColors.darkThemePrimaryDark,
+                        borderRadius: BorderRadius.circular(12.0),
+                        boxShadow: const [
                           BoxShadow(color: Color(0x55212121), blurRadius: 8.0),
                         ],
                       ),
@@ -109,70 +113,70 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                         //     min: 0.0,
                         //     max: duration.inSeconds.toDouble(),
                         //     onChanged: (_) {}),
-                        Padding(
+                        Container(
                           padding:
-                              const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
+                          const EdgeInsets.symmetric(horizontal: 8.0,vertical: 8.0),
                           child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Container(
-                                  height: 60.0,
-                                  width: 60.0,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      image: DecorationImage(
-                                          image: NetworkImage(state
-                                              .favouritesList[
-                                                  state.selectedIndex!]
-                                              .coverUrl),
-                                          fit: BoxFit.fill)),
-                                ),
+                                    height: 60.0,
+                                    width: 60.0,
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                        BorderRadius.circular(8.0)),
+                                    child: CachedNetworkImage(
+                                        height: 400,
+                                        width:
+                                        MediaQuery.of(context).size.width,
+                                        fit: BoxFit.fill,
+                                        progressIndicatorBuilder: (context, url,
+                                            progress) =>
+                                            Center(
+                                              child: CircularProgressIndicator(
+                                                value: progress.progress,
+                                                color: Theme.of(context)
+                                                    .primaryColorLight,
+                                              ),
+                                            ),
+                                        imageUrl:
+                                        state.selectedModel!.coverUrl)),
                                 const SizedBox(width: 8.0),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                          state
-                                              .favouritesList[
-                                                  state.selectedIndex!]
-                                              .title,
+                                      Text(state.selectedModel!.title,
                                           style: const TextStyle(
-                                              fontSize: 16.0,
-                                              fontWeight: FontWeight.w600)),
-                                      const SizedBox(height: 6.0),
-                                      Text(
-                                        state
-                                            .favouritesList[
-                                                state.selectedIndex!]
-                                            .artist,
-                                        style: const TextStyle(
-                                            color: Colors.grey, fontSize: 14.0),
-                                      )
+                                              fontWeight: FontWeight.w500, fontSize: 14.0)),
+                                      const SizedBox(height: 2.0),
+                                      Text(state.selectedModel!.artist,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium!
+                                              .copyWith(
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 12.0))
                                     ],
                                   ),
                                 ),
                                 IconButton(
                                     onPressed: () {
                                       if (mState.isPlaying) {
-                                        if (homeBloc.state.selectedIndex !=
+                                        if (homeBloc.state.selectedModel !=
                                             null) {
                                           playerBloc.add(PlayerOnPaused(
-                                              index: homeBloc
-                                                  .state.selectedIndex!));
+                                              selectedModel: homeBloc
+                                                  .state.selectedModel!));
                                         }
                                       } else {
-                                        if (homeBloc.state.selectedIndex !=
+                                        if (homeBloc.state.selectedModel !=
                                             null) {
                                           playerBloc.add(PlayerStartOrResume(
                                               url: homeBloc
-                                                  .state
-                                                  .favouritesList[
-                                                      state.selectedIndex!]
-                                                  .url,
-                                              index: homeBloc
-                                                  .state.selectedIndex!));
+                                                  .state.selectedModel!.url,
+                                              selectedModel: homeBloc
+                                                  .state.selectedModel!));
                                         }
                                       }
                                     },

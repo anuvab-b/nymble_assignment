@@ -1,5 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nymble_assignment/domain/music_list_model.dart';
 
 part 'player_event.dart';
 
@@ -11,7 +12,7 @@ class PlayerBloc extends Bloc<PlayerEvent, MyPlayerState> {
   PlayerBloc(this.audioPlayer)
       : super(PlayerInit(
             isPlaying: false,
-            selectedIndex: -1,
+            selectedModel: null,
             position: const Duration(seconds: 0),
             duration: const Duration(seconds: 0))) {
     on<PlayerOnPaused>(onPlayerPaused);
@@ -22,7 +23,7 @@ class PlayerBloc extends Bloc<PlayerEvent, MyPlayerState> {
     audioPlayer.pause();
     emit(PlayerPlay(
         isPlaying: false,
-        selectedIndex: event.index,
+        selectedModel: event.selectedModel,
         duration: state.duration,
         position: state.position));
     // audioPlayer.onDurationChanged.listen((event) {
@@ -38,7 +39,7 @@ class PlayerBloc extends Bloc<PlayerEvent, MyPlayerState> {
     await audioPlayer.play(UrlSource(event.url));
     emit(PlayerPlay(
         isPlaying: true,
-        selectedIndex: event.index,
+        selectedModel: event.selectedModel,
         duration: state.duration,
         position: state.position));
     // audioPlayer.onDurationChanged.listen((event) {

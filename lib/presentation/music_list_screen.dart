@@ -7,6 +7,7 @@ import 'package:nymble_assignment/bloc/player/player_bloc.dart';
 import 'package:nymble_assignment/domain/music_list_model.dart';
 import 'package:nymble_assignment/presentation/list_tile.dart';
 import 'package:nymble_assignment/presentation/music_details_screen.dart';
+import 'package:nymble_assignment/utils/theme_styles.dart';
 
 class MusicListScreen extends StatefulWidget {
   const MusicListScreen({super.key});
@@ -47,7 +48,7 @@ class _MusicListScreenState extends State<MusicListScreen> {
                   return ListTileWidget(
                     musicModel: musicModel,
                     onTap: () {
-                      // homeBloc.add(ListItemPress(itemIndex: index));
+                      homeBloc.add(ListItemPress(selectedModel: musicModel));
                       // playerBloc.add(PlayerStartOrResume(
                       //     url: homeBloc.state.musicList[index].url,
                       //     index: index));
@@ -65,13 +66,15 @@ class _MusicListScreenState extends State<MusicListScreen> {
                 },
                 itemCount: state.musicList.length,
               )),
-              if (state.selectedIndex != null && state.selectedIndex != -1)
+              if (state.selectedModel != null)
                 BlocBuilder<PlayerBloc, MyPlayerState>(
                   builder: (context, mState) {
                     return Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        boxShadow: [
+                      margin: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
+                      decoration: BoxDecoration(
+                        color: AppColors.darkThemePrimaryDark,
+                        borderRadius: BorderRadius.circular(12.0),
+                        boxShadow: const [
                           BoxShadow(color: Color(0x55212121), blurRadius: 8.0),
                         ],
                       ),
@@ -81,11 +84,11 @@ class _MusicListScreenState extends State<MusicListScreen> {
                         //     min: 0.0,
                         //     max: duration.inSeconds.toDouble(),
                         //     onChanged: (_) {}),
-                        Padding(
+                        Container(
                           padding:
-                              const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
+                              const EdgeInsets.symmetric(horizontal: 8.0,vertical: 8.0),
                           child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Container(
                                     height: 60.0,
@@ -107,51 +110,44 @@ class _MusicListScreenState extends State<MusicListScreen> {
                                                     .primaryColorLight,
                                               ),
                                             ),
-                                        imageUrl: state
-                                            .musicList[state.selectedIndex!]
-                                            .coverUrl)),
+                                        imageUrl:
+                                            state.selectedModel!.coverUrl)),
                                 const SizedBox(width: 8.0),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                          state.musicList[state.selectedIndex!]
-                                              .title,
+                                      Text(state.selectedModel!.title,
                                           style: const TextStyle(
-                                              fontSize: 16.0,
-                                              fontWeight: FontWeight.w600)),
-                                      const SizedBox(height: 6.0),
-                                      Text(
-                                        state.musicList[state.selectedIndex!]
-                                            .artist,
-                                        style: const TextStyle(
-                                            color: Colors.grey, fontSize: 14.0),
-                                      )
+                                              fontWeight: FontWeight.w500, fontSize: 14.0)),
+                                      const SizedBox(height: 2.0),
+                                      Text(state.selectedModel!.artist,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium!
+                                              .copyWith(
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 12.0))
                                     ],
                                   ),
                                 ),
                                 IconButton(
                                     onPressed: () {
                                       if (mState.isPlaying) {
-                                        if (homeBloc.state.selectedIndex !=
+                                        if (homeBloc.state.selectedModel !=
                                             null) {
                                           playerBloc.add(PlayerOnPaused(
-                                              index: homeBloc
-                                                  .state.selectedIndex!));
+                                              selectedModel: homeBloc
+                                                  .state.selectedModel!));
                                         }
                                       } else {
-                                        if (homeBloc.state.selectedIndex !=
+                                        if (homeBloc.state.selectedModel !=
                                             null) {
                                           playerBloc.add(PlayerStartOrResume(
                                               url: homeBloc
-                                                  .state
-                                                  .musicList[
-                                                      state.selectedIndex!]
-                                                  .url,
-                                              index: homeBloc
-                                                  .state.selectedIndex!));
+                                                  .state.selectedModel!.url,
+                                              selectedModel: homeBloc
+                                                  .state.selectedModel!));
                                         }
                                       }
                                     },

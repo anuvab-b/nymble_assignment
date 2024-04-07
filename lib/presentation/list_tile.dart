@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nymble_assignment/domain/music_list_model.dart';
@@ -30,15 +31,23 @@ class ListTileWidget extends StatelessWidget {
                 children: [
                   Hero(
                     tag: musicModel.url,
-                    child: Container(
-                      height: 64.0,
-                      width: 64.0,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(4.0),
-                          image: DecorationImage(
-                              image: NetworkImage(musicModel.coverUrl),
-                              fit: BoxFit.fill)),
-                    ),
+                    child: SizedBox(
+                        height: 64.0,
+                        width: 64.0,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: CachedNetworkImage(
+                            fit: BoxFit.fill,
+                            progressIndicatorBuilder:
+                                (context, url, progress) => Center(
+                              child: CircularProgressIndicator(
+                                color: Theme.of(context).primaryColorLight,
+                                value: progress.progress,
+                              ),
+                            ),
+                            imageUrl: musicModel.coverUrl,
+                          ),
+                        )),
                   ),
                   const SizedBox(width: 10.0),
                   Flexible(
