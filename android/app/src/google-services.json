@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "902558207659",
+    "project_id": "nymble-assignment-d1b2e",
+    "storage_bucket": "nymble-assignment-d1b2e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:902558207659:android:909d2dee1cf42d61c431ee",
+        "android_client_info": {
+          "package_name": "com.anuvab.nymble_assignment"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkF5GIvgjCRHvyvLcklm-HvJi2L-xVSHo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
