@@ -21,20 +21,21 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   onListItemLikePress(ListItemLikePress event, Emitter<HomeState> emit) {
-    List<String> favourites = state.favouritesList;
+    List<MusicModel> favourites = state.favouritesList;
     if (!event.isLiked) {
-      favourites.add(state.musicList[event.index].url);
+      favourites.add(state.musicList[event.index]);
     } else {
-      favourites.removeWhere((element) => element == event.url);
+      favourites.removeWhere((element) => element.url == event.url);
     }
     // List results = await Future.wait(
     //     [musicRepository.getMusicList(), musicRepository.getFavouritesList()]);
     List<MusicModel> musicList = state.musicList;
+    List<String> favouriteStrings = state.favouritesList.map((e) => e.url).toList();
     // List<MusicModel> favouritesMusicList = results[1];
     // List<String> favourites =
     // favouritesMusicList.map((e) => e.coverUrl).toList();
     for (var music in musicList) {
-      if (favourites.contains(music.url)) {
+      if (favouriteStrings.contains(music.url)) {
         music.isLiked = true;
       } else {
         music.isLiked = false;
@@ -56,6 +57,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
     }
     emit(HomeSuccess(
-        selectedIndex: -1, musicList: musicList, favouritesList: favourites));
+        selectedIndex: -1, musicList: musicList, favouritesList: favouritesMusicList));
   }
 }

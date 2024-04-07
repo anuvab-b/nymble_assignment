@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nymble_assignment/presentation/error_screen.dart';
 import 'package:nymble_assignment/presentation/login_screen.dart';
-import 'package:nymble_assignment/presentation/music_home_screen.dart';
+import 'package:nymble_assignment/presentation/home_screen.dart';
 import 'package:nymble_assignment/presentation/signup_screen.dart';
 import 'package:nymble_assignment/presentation/splash_screen.dart';
 import 'package:nymble_assignment/utils/route_names.dart';
@@ -19,7 +19,7 @@ class Routes {
         return MaterialPageRoute(builder: (context) => const SplashScreen());
 
       case RouteNames.home:
-        return MaterialPageRoute(builder: (context) => const MusicHomeScreen());
+        return MaterialPageRoute(builder: (context) => const HomeScreen());
 
       default:
         return MaterialPageRoute(builder: (context) => const ErrorScreen());

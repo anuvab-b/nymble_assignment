@@ -9,7 +9,7 @@ import 'package:nymble_assignment/bloc/signup/signup_bloc.dart';
 import 'package:nymble_assignment/bloc/splash/splash_bloc.dart';
 import 'package:nymble_assignment/domain/i_auth_repository.dart';
 import 'package:nymble_assignment/domain/i_music_repository.dart';
-import 'package:nymble_assignment/presentation/music_home_screen.dart';
+import 'package:nymble_assignment/presentation/home_screen.dart';
 import 'package:nymble_assignment/service_locator.dart';
 import 'package:nymble_assignment/utils/route_names.dart';
 import 'package:nymble_assignment/utils/routes.dart';
@@ -48,10 +48,11 @@ class MyApp extends StatelessWidget {
           title: 'Flutter Demo',
           theme: ThemeData(
             primarySwatch: Colors.blue,
+            useMaterial3: true
           ),
           initialRoute: RouteNames.splash,
           onGenerateRoute: Routes.generateRoute,
-          home: const MusicHomeScreen()),
+          home: const HomeScreen()),
     );
   }
 }
