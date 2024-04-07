@@ -19,6 +19,6 @@ class SecureStorageManager{
 
   /// Clear the logged in users data from local storage
   Future<void> logoutUser() async {
-    var result = await _storage.deleteAll();
+    await _storage.deleteAll();
   }
 }
