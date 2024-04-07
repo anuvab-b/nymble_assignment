@@ -12,5 +12,9 @@ class PlayerStartOrResume extends PlayerEvent {
   String url;
   MusicModel selectedModel;
 
-  PlayerStartOrResume({required this.url,required this.selectedModel});
+  PlayerStartOrResume({required this.url, required this.selectedModel});
+}
+
+class PlayerStop extends PlayerEvent {
+  PlayerStop();
 }

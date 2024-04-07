@@ -26,3 +26,8 @@ class FavouriteItemPress extends HomeEvent {
   FavouriteItemPress(
       {required this.index, required this.url});
 }
+
+class OnSearchTextChange extends HomeEvent{
+  String searchText;
+  OnSearchTextChange({required this.searchText});
+}

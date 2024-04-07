@@ -17,6 +17,7 @@ class PlayerBloc extends Bloc<PlayerEvent, MyPlayerState> {
             duration: const Duration(seconds: 0))) {
     on<PlayerOnPaused>(onPlayerPaused);
     on<PlayerStartOrResume>(onPlayerStartOrResume);
+    on<PlayerStop>(onPlayerStop);
   }
 
   onPlayerPaused(PlayerOnPaused event, Emitter<MyPlayerState> emit) {
@@ -48,5 +49,12 @@ class PlayerBloc extends Bloc<PlayerEvent, MyPlayerState> {
     // audioPlayer.onPositionChanged.listen((event) {
     //   emit(state.copyWith(position: event));
     // });
+  }
+
+  onPlayerStop(PlayerStop event, Emitter<MyPlayerState> emit)async{
+    if(audioPlayer.state!=PlayerState.stopped) {
+      await audioPlayer.stop();
+      await audioPlayer.dispose();
+    }
   }
 }
