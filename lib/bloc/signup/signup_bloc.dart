@@ -35,6 +35,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
 
   onSignupWithEmailAndPassword(
       SignupWithEmailAndPassword event, Emitter<SignupState> emit) async {
+    User? user;
     try {
       if (!(state.isSignupEmailValid || state.isSignupPasswordValid)) {
         emit(SignupFailure(
@@ -47,6 +48,13 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
             isSignupPasswordValid: state.isSignupPasswordValid));
         final UserCredential userCredential = await authRepository
             .signUpWithUserIdAndPassword(event.email, event.password);
+        user = userCredential.user;
+
+        if(user!=null){
+          await user.updateDisplayName(state.email);
+          await user.reload();
+          authRepository.addUserToCollection(user);
+        }
         emit(SignupLoaded(
             isSignupEmailValid: state.isSignupEmailValid,
             isSignupPasswordValid: state.isSignupPasswordValid));

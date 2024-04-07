@@ -42,6 +42,7 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                     itemBuilder: (ctx, index) {
                       MusicModel musicModel = state.favouritesList[index];
                       return ListTileWidget(
+                        isLiked: true,
                         musicModel: musicModel,
                         onTap: () {
                           // homeBloc.add(ListItemPress(itemIndex: index));
@@ -53,9 +54,8 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                                   MusicDetailsScreen(musicModel: musicModel)));
                         },
                         onHeartTap: () {
-                          homeBloc.add(ListItemLikePress(
+                          homeBloc.add(FavouriteItemPress(
                               index: index,
-                              isLiked: musicModel.isLiked,
                               url: musicModel.url));
                         },
                       );

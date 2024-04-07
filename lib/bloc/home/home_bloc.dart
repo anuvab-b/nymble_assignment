@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nymble_assignment/domain/i_music_repository.dart';
 import 'package:nymble_assignment/domain/music_list_model.dart';
@@ -14,49 +15,95 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<OnHomeInit>(onListInit);
     on<ListItemPress>(onListItemPress);
     on<ListItemLikePress>(onListItemLikePress);
+    on<FavouriteItemPress>(onFavouriteItemPress);
   }
 
   onListItemPress(ListItemPress event, Emitter<HomeState> emit) {
     emit(state.copyWith(selectedIndex: event.itemIndex));
   }
 
-  onListItemLikePress(ListItemLikePress event, Emitter<HomeState> emit) {
-    List<MusicModel> favourites = state.favouritesList;
-    if (!event.isLiked) {
-      favourites.add(state.musicList[event.index]);
-    } else {
-      favourites.removeWhere((element) => element.url == event.url);
-    }
-    // List results = await Future.wait(
-    //     [musicRepository.getMusicList(), musicRepository.getFavouritesList()]);
-    List<MusicModel> musicList = state.musicList;
-    List<String> favouriteStrings = state.favouritesList.map((e) => e.url).toList();
-    // List<MusicModel> favouritesMusicList = results[1];
-    // List<String> favourites =
-    // favouritesMusicList.map((e) => e.coverUrl).toList();
-    for (var music in musicList) {
-      if (favouriteStrings.contains(music.url)) {
-        music.isLiked = true;
+  onListItemLikePress(ListItemLikePress event, Emitter<HomeState> emit) async {
+    try {
+      List<MusicModel> favourites = state.favouritesList;
+      final User? user = FirebaseAuth.instance.currentUser;
+      if (!event.isLiked) {
+        favourites.add(state.musicList[event.index]);
       } else {
-        music.isLiked = false;
+        favourites.removeWhere((element) => element.url == event.url);
       }
+      MusicListModel musicListModel = MusicListModel(result: favourites);
+      await musicRepository.updateFavourites(user!, musicListModel);
+      List results = await Future.wait([
+        musicRepository.getMusicList(),
+        musicRepository.getFavouritesList(user)
+      ]);
+      List<MusicModel> musicList = results[0];
+      List<MusicModel> favouritesMusicList = results[1];
+      List<String> favouriteStrings =
+          favouritesMusicList.map((e) => e.url).toList();
+      for (var music in musicList) {
+        if (favouriteStrings.contains(music.url)) {
+          music.isLiked = true;
+        } else {
+          music.isLiked = false;
+        }
+      }
+      emit(state.copyWith(musicList: musicList,favouritesList: favourites));
+    } catch (e) {
+      emit(HomeError(message: e.toString(), musicList: [], favouritesList: []));
     }
-    emit(state.copyWith(favouritesList: favourites));
+  }
+  onFavouriteItemPress(FavouriteItemPress event, Emitter<HomeState> emit) async {
+    try {
+      List<MusicModel> favourites = state.favouritesList;
+      final User? user = FirebaseAuth.instance.currentUser;
+      favourites.removeWhere((element) => element.url == event.url);
+      MusicListModel musicListModel = MusicListModel(result: favourites);
+      await musicRepository.updateFavourites(user!, musicListModel);
+      List results = await Future.wait([
+        musicRepository.getMusicList(),
+        musicRepository.getFavouritesList(user)
+      ]);
+      List<MusicModel> musicList = results[0];
+      List<MusicModel> favouritesMusicList = results[1];
+      List<String> favouriteStrings =
+      favouritesMusicList.map((e) => e.url).toList();
+      for (var music in musicList) {
+        if (favouriteStrings.contains(music.url)) {
+          music.isLiked = true;
+        } else {
+          music.isLiked = false;
+        }
+      }
+      emit(state.copyWith(musicList: musicList,favouritesList: favourites));
+    } catch (e) {
+      emit(HomeError(message: e.toString(), musicList: [], favouritesList: []));
+    }
   }
 
+
   onListInit(OnHomeInit event, Emitter<HomeState> emit) async {
-    emit(const HomeLoading(musicList: [], favouritesList: []));
-    List results = await Future.wait(
-        [musicRepository.getMusicList(), musicRepository.getFavouritesList()]);
-    List<MusicModel> musicList = results[0];
-    List<MusicModel> favouritesMusicList = results[1];
-    List<String> favourites = favouritesMusicList.map((e) => e.url).toList();
-    for (var music in musicList) {
-      if (favourites.contains(music.url)) {
-        music.isLiked = true;
+    try {
+      final User? user = FirebaseAuth.instance.currentUser;
+      emit(const HomeLoading(musicList: [], favouritesList: []));
+      List results = await Future.wait([
+        musicRepository.getMusicList(),
+        musicRepository.getFavouritesList(user!)
+      ]);
+      List<MusicModel> musicList = results[0];
+      List<MusicModel> favouritesMusicList = results[1];
+      List<String> favourites = favouritesMusicList.map((e) => e.url).toList();
+      for (var music in musicList) {
+        if (favourites.contains(music.url)) {
+          music.isLiked = true;
+        }
       }
+      emit(HomeSuccess(
+          selectedIndex: -1,
+          musicList: musicList,
+          favouritesList: favouritesMusicList));
+    } catch (e) {
+      emit(HomeError(message: "Error", musicList: [], favouritesList: []));
     }
-    emit(HomeSuccess(
-        selectedIndex: -1, musicList: musicList, favouritesList: favouritesMusicList));
   }
 }

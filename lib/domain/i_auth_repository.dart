@@ -10,4 +10,5 @@ abstract class IAuthRepository {
       String emailId, String password);
 
   Future<void> logoutUser();
+  Future<void> addUserToCollection(User user);
 }

@@ -18,3 +18,11 @@ class ListItemLikePress extends HomeEvent {
   ListItemLikePress(
       {required this.index, required this.url, required this.isLiked});
 }
+
+class FavouriteItemPress extends HomeEvent {
+  String url;
+  int index;
+
+  FavouriteItemPress(
+      {required this.index, required this.url});
+}

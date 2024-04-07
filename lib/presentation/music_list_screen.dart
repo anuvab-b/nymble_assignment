@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -86,16 +87,28 @@ class _MusicListScreenState extends State<MusicListScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 Container(
-                                  height: 60.0,
-                                  width: 60.0,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      image: DecorationImage(
-                                          image: NetworkImage(state
-                                              .musicList[state.selectedIndex!]
-                                              .coverUrl),
-                                          fit: BoxFit.fill)),
-                                ),
+                                    height: 60.0,
+                                    width: 60.0,
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(8.0)),
+                                    child: CachedNetworkImage(
+                                        height: 400,
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        fit: BoxFit.fill,
+                                        progressIndicatorBuilder: (context, url,
+                                                progress) =>
+                                            Center(
+                                              child: CircularProgressIndicator(
+                                                value: progress.progress,
+                                                color: Theme.of(context)
+                                                    .primaryColorLight,
+                                              ),
+                                            ),
+                                        imageUrl: state
+                                            .musicList[state.selectedIndex!]
+                                            .coverUrl)),
                                 const SizedBox(width: 8.0),
                                 Expanded(
                                   child: Column(

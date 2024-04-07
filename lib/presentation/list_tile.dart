@@ -6,9 +6,11 @@ class ListTileWidget extends StatelessWidget {
   final MusicModel musicModel;
   final VoidCallback onTap;
   final VoidCallback onHeartTap;
+  final bool isLiked;
 
   const ListTileWidget(
       {super.key,
+      this.isLiked = false,
       required this.onTap,
       required this.onHeartTap,
       required this.musicModel});
@@ -59,7 +61,11 @@ class ListTileWidget extends StatelessWidget {
             IconButton(
                 onPressed: onHeartTap,
                 icon: Icon(
-                    !musicModel.isLiked ? MdiIcons.heartOutline : MdiIcons.heart,
+                    isLiked
+                        ? MdiIcons.heart
+                        : !musicModel.isLiked
+                            ? MdiIcons.heartOutline
+                            : MdiIcons.heart,
                     color: Colors.red))
           ],
         ),

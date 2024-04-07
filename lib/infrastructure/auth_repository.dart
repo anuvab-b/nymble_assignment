@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:nymble_assignment/domain/i_auth_repository.dart';
@@ -84,5 +85,13 @@ class AuthRepository implements IAuthRepository{
     } catch (e) {
       throw (e.toString());
     }
+  }
+
+  @override
+  Future<void> addUserToCollection(User? user) async{
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(user?.displayName)
+        .set({"username": user?.displayName, "email-id": user?.email});
   }
 }
