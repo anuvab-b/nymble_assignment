@@ -50,8 +50,7 @@ class MyApp extends StatelessWidget {
           darkTheme: darkThemeData(context),
           themeMode: ThemeMode.dark,
           initialRoute: RouteNames.splash,
-          onGenerateRoute: Routes.generateRoute,
-          home: const HomeScreen()),
+          onGenerateRoute: Routes.generateRoute),
     );
   }
 }
