@@ -13,6 +13,7 @@ import 'package:nymble_assignment/presentation/home_screen.dart';
 import 'package:nymble_assignment/service_locator.dart';
 import 'package:nymble_assignment/utils/route_names.dart';
 import 'package:nymble_assignment/utils/routes.dart';
+import 'package:nymble_assignment/utils/theme_styles.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,10 +47,8 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-            useMaterial3: true
-          ),
+          darkTheme: darkThemeData(context),
+          themeMode: ThemeMode.dark,
           initialRoute: RouteNames.splash,
           onGenerateRoute: Routes.generateRoute,
           home: const HomeScreen()),

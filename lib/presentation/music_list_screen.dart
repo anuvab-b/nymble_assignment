@@ -41,6 +41,7 @@ class _MusicListScreenState extends State<MusicListScreen> {
             children: [
               Expanded(
                   child: ListView.builder(
+                physics: const BouncingScrollPhysics(),
                 itemBuilder: (ctx, index) {
                   MusicModel musicModel = state.musicList[index];
                   return ListTileWidget(

@@ -1,4 +1,4 @@
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:nymble_assignment/utils/secure_storage_manager.dart';
 import 'package:nymble_assignment/domain/i_auth_repository.dart';
@@ -81,6 +81,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           userPassword: "",
           isLoginEmailValid: false,
           isLoginPasswordValid: false));
+      await SecureStorageManager().logoutUser();
     } catch (e) {
       emit(LogoutFailure(
           error: e.toString(),
@@ -90,24 +91,23 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   Future<void> signInWithGoogle(
-      LoginWithGoogleRequested event,
-      Emitter<LoginState> emit) async {
+      LoginWithGoogleRequested event, Emitter<LoginState> emit) async {
     try {
-        emit(LoginLoading(
-            isLoginEmailValid: state.isLoginEmailValid,
-            isLoginPasswordValid: state.isLoginPasswordValid));
-        final UserCredential userCredential = await authRepository
-            .signInWithGoogle();
-        emit(LoginLoaded(
-            isLoginEmailValid: state.isLoginEmailValid,
-            isLoginPasswordValid: state.isLoginPasswordValid));
-        await SecureStorageManager()
-            .writeSecureStorageData("user_id", userCredential.user?.email);
-        emit(LoginSuccess(
-          userCredential: userCredential,
-          isLoginEmailValid: true,
-          isLoginPasswordValid: true,
-        ));
+      emit(LoginLoading(
+          isLoginEmailValid: state.isLoginEmailValid,
+          isLoginPasswordValid: state.isLoginPasswordValid));
+      final UserCredential userCredential =
+          await authRepository.signInWithGoogle();
+      emit(LoginLoaded(
+          isLoginEmailValid: state.isLoginEmailValid,
+          isLoginPasswordValid: state.isLoginPasswordValid));
+      await SecureStorageManager()
+          .writeSecureStorageData("user_id", userCredential.user?.email);
+      emit(LoginSuccess(
+        userCredential: userCredential,
+        isLoginEmailValid: true,
+        isLoginPasswordValid: true,
+      ));
     } catch (e) {
       emit(LoginFailure(
           error: e.toString(),

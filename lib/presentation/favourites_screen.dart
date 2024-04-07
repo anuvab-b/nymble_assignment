@@ -1,11 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nymble_assignment/bloc/home/home_bloc.dart';
 import 'package:nymble_assignment/bloc/player/player_bloc.dart';
 import 'package:nymble_assignment/domain/music_list_model.dart';
 import 'package:nymble_assignment/presentation/list_tile.dart';
 import 'package:nymble_assignment/presentation/music_details_screen.dart';
+import 'package:nymble_assignment/presentation/widgets/text.dart';
+import 'package:nymble_assignment/utils/constants.dart';
+import 'package:nymble_assignment/utils/theme_styles.dart';
+
 class FavouritesScreen extends StatefulWidget {
   const FavouritesScreen({super.key});
 
@@ -38,30 +43,56 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
           return Column(
             children: [
               Expanded(
-                  child: ListView.builder(
-                    itemBuilder: (ctx, index) {
-                      MusicModel musicModel = state.favouritesList[index];
-                      return ListTileWidget(
-                        isLiked: true,
-                        musicModel: musicModel,
-                        onTap: () {
-                          // homeBloc.add(ListItemPress(itemIndex: index));
-                          // playerBloc.add(PlayerStartOrResume(
-                          //     url: homeBloc.state.favouritesList[index].url,
-                          //     index: index));
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) =>
-                                  MusicDetailsScreen(musicModel: musicModel)));
-                        },
-                        onHeartTap: () {
-                          homeBloc.add(FavouriteItemPress(
-                              index: index,
-                              url: musicModel.url));
-                        },
-                      );
-                    },
-                    itemCount: state.favouritesList.length,
-                  )),
+                  child: state.favouritesList.isNotEmpty
+                      ? ListView.builder(
+                    physics: const BouncingScrollPhysics(),
+                          itemBuilder: (ctx, index) {
+                            MusicModel musicModel = state.favouritesList[index];
+                            return ListTileWidget(
+                              isLiked: true,
+                              musicModel: musicModel,
+                              onTap: () {
+                                // homeBloc.add(ListItemPress(itemIndex: index));
+                                // playerBloc.add(PlayerStartOrResume(
+                                //     url: homeBloc.state.favouritesList[index].url,
+                                //     index: index));
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => MusicDetailsScreen(
+                                        musicModel: musicModel)));
+                              },
+                              onHeartTap: () {
+                                homeBloc.add(FavouriteItemPress(
+                                    index: index, url: musicModel.url));
+                              },
+                            );
+                          },
+                          itemCount: state.favouritesList.length,
+                        )
+                      : Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SvgPicture.asset(AppConstants.icNoData,
+                                  height: 240, width: 240),
+                              const SizedBox(height: 16.0),
+                              const CommonText(
+                                  value: "Add Favourites",
+                                  textColor: kTitleTextDarkColor,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 28),
+                              const SizedBox(height: 16.0),
+                              const Padding(
+                                padding: EdgeInsets.all(16.0),
+                                child: CommonText(
+                                    value: "Don't forget to bookmark the songs you like the most so that you can easily find those here",
+                                    textColor: kBodyTextColorDark,
+                                    fontWeight: FontWeight.w400,
+                                    maxLines: 3,
+                                    fontSize: 16),
+                              ),
+                            ],
+                          ),
+                        )),
               if (state.selectedIndex != null && state.selectedIndex != -1)
                 BlocBuilder<PlayerBloc, MyPlayerState>(
                   builder: (context, mState) {
@@ -80,7 +111,7 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                         //     onChanged: (_) {}),
                         Padding(
                           padding:
-                          const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
+                              const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
@@ -91,7 +122,8 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                                       borderRadius: BorderRadius.circular(8.0),
                                       image: DecorationImage(
                                           image: NetworkImage(state
-                                              .favouritesList[state.selectedIndex!]
+                                              .favouritesList[
+                                                  state.selectedIndex!]
                                               .coverUrl),
                                           fit: BoxFit.fill)),
                                 ),
@@ -99,17 +131,21 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                                 Expanded(
                                   child: Column(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                          state.favouritesList[state.selectedIndex!]
+                                          state
+                                              .favouritesList[
+                                                  state.selectedIndex!]
                                               .title,
                                           style: const TextStyle(
                                               fontSize: 16.0,
                                               fontWeight: FontWeight.w600)),
                                       const SizedBox(height: 6.0),
                                       Text(
-                                        state.favouritesList[state.selectedIndex!]
+                                        state
+                                            .favouritesList[
+                                                state.selectedIndex!]
                                             .artist,
                                         style: const TextStyle(
                                             color: Colors.grey, fontSize: 14.0),
@@ -133,7 +169,7 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                                               url: homeBloc
                                                   .state
                                                   .favouritesList[
-                                              state.selectedIndex!]
+                                                      state.selectedIndex!]
                                                   .url,
                                               index: homeBloc
                                                   .state.selectedIndex!));

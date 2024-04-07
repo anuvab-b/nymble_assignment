@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:nymble_assignment/utils/colour_utils.dart';
+import 'package:nymble_assignment/utils/theme_styles.dart';
 
 class CommonLoader extends StatelessWidget {
   const CommonLoader({Key? key}) : super(key: key);
@@ -12,7 +12,7 @@ class CommonLoader extends StatelessWidget {
         width: 72.0,
         padding: const EdgeInsets.all(8.0),
         decoration: const BoxDecoration(
-            color: AppColourUtils.kGreyColor,
+            color: kBodyTextColorDark,
             borderRadius: BorderRadius.all(Radius.circular(20))),
         child: const CupertinoActivityIndicator(radius: 20),
       ),

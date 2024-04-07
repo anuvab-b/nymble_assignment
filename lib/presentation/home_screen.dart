@@ -6,6 +6,7 @@ import 'package:nymble_assignment/presentation/favourites_screen.dart';
 import 'package:nymble_assignment/presentation/music_list_screen.dart';
 import 'package:nymble_assignment/presentation/profile_screen.dart';
 import 'package:nymble_assignment/utils/constants.dart';
+import 'package:nymble_assignment/utils/theme_styles.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -28,42 +29,46 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         title: Center(
-          child: Image.asset(AppConstants.splashIconWebp, height: 96),
+          child: Image.asset(AppConstants.splashIconWebp,
+              height: 96, color: kPrimaryIconLightColor),
         ),
         elevation: 0,
       ),
-      body: [
-        const MusicListScreen(),
-        const FavouritesScreen(),
-        const ProfileScreen()
-      ][bottomIndex],
-      bottomNavigationBar: NavigationBar(
-        onDestinationSelected: (int index) {
+      body: Container(
+        color: Theme.of(context).colorScheme.background,
+        child: [
+          const MusicListScreen(),
+          const FavouritesScreen(),
+          const ProfileScreen()
+        ][bottomIndex],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+
+        onTap: (int index) {
           setState(() {
             bottomIndex = index;
           });
         },
-        selectedIndex: bottomIndex,
-        destinations: <NavigationDestination>[
-          NavigationDestination(
-            selectedIcon: Icon(MdiIcons.home),
+        currentIndex: bottomIndex,
+        items: [
+          BottomNavigationBarItem(
+            label: "Home",
+            activeIcon: Icon(MdiIcons.home),
             icon: Icon(MdiIcons.homeOutline),
-            label: 'Home',
           ),
-          NavigationDestination(
-            selectedIcon: Icon(MdiIcons.heart),
+          BottomNavigationBarItem(
+            label: "Favourites",
+            activeIcon: Icon(MdiIcons.heart),
             icon: Icon(MdiIcons.heartOutline),
-            label: 'Favourites',
           ),
-          const NavigationDestination(
-            selectedIcon: Icon(Icons.person),
+          const BottomNavigationBarItem(
+            label: "Profile",
+            activeIcon: Icon(Icons.person),
             icon: Icon(Icons.person_outline),
-            label: 'Profile',
-          ),
+          )
         ],
       ),
     );

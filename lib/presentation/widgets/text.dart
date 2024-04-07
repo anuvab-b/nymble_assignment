@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nymble_assignment/utils/colour_utils.dart';
+import 'package:nymble_assignment/utils/theme_styles.dart';
 
 class CommonText extends StatelessWidget {
   final String value;
@@ -22,11 +22,12 @@ class CommonText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(value,
+        textAlign: TextAlign.center,
         maxLines: maxLines ?? 1,
         style: TextStyle(
             fontFamily: "Poppins",
             fontWeight: fontWeight ?? FontWeight.w600,
-            color: textColor ?? AppColourUtils.kDarkerTextColor,
+            color: textColor ?? kTitleTextDarkColor,
             overflow: textOverflow ?? TextOverflow.ellipsis,
             fontSize: fontSize ?? 14.0
         ));

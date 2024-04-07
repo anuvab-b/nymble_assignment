@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:nymble_assignment/utils/colour_utils.dart';
+import 'package:nymble_assignment/utils/theme_styles.dart';
+
 class ErrorScreen extends StatelessWidget {
   const ErrorScreen({super.key});
 
@@ -8,9 +9,7 @@ class ErrorScreen extends StatelessWidget {
     return const Center(
       child: Text("Screen Not Found",
           style: TextStyle(
-              fontSize: 16,
-              color: AppColourUtils.kGreyColor,
-              fontFamily: "Poppins")),
+              fontSize: 16, color: kBodyTextColorDark, fontFamily: "Poppins")),
     );
   }
 }
