@@ -53,10 +53,14 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                               isLiked: true,
                               musicModel: musicModel,
                               onTap: () {
-                                // homeBloc.add(ListItemPress(itemIndex: index));
-                                // playerBloc.add(PlayerStartOrResume(
-                                //     url: homeBloc.state.favouritesList[index].url,
-                                //     index: index));
+                                homeBloc.add(ListItemPress(
+                                    selectedModel:
+                                        state.favouritesList[index]));
+                                playerBloc.add(PlayerStartOrResume(
+                                    url: homeBloc
+                                        .state.favouritesList[index].url,
+                                    selectedModel:
+                                        state.favouritesList[index]));
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => MusicDetailsScreen(
                                         musicModel: musicModel)));
@@ -96,7 +100,11 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                           ),
                         )),
               if (state.selectedModel != null)
-                BlocBuilder<PlayerBloc, MyPlayerState>(
+                InkWell(onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => MusicDetailsScreen(
+                          musicModel: state.selectedModel!)));
+                }, child: BlocBuilder<PlayerBloc, MyPlayerState>(
                   builder: (context, mState) {
                     return Container(
                       margin: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
@@ -114,49 +122,52 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                         //     max: duration.inSeconds.toDouble(),
                         //     onChanged: (_) {}),
                         Container(
-                          padding:
-                          const EdgeInsets.symmetric(horizontal: 8.0,vertical: 8.0),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0, vertical: 8.0),
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Container(
+                                SizedBox(
                                     height: 60.0,
                                     width: 60.0,
-                                    decoration: BoxDecoration(
-                                        borderRadius:
-                                        BorderRadius.circular(8.0)),
-                                    child: CachedNetworkImage(
-                                        height: 400,
-                                        width:
-                                        MediaQuery.of(context).size.width,
-                                        fit: BoxFit.fill,
-                                        progressIndicatorBuilder: (context, url,
-                                            progress) =>
-                                            Center(
-                                              child: CircularProgressIndicator(
-                                                value: progress.progress,
-                                                color: Theme.of(context)
-                                                    .primaryColorLight,
-                                              ),
-                                            ),
-                                        imageUrl:
-                                        state.selectedModel!.coverUrl)),
+                                    child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(8),
+                                        child: CachedNetworkImage(
+                                            height: 400,
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            fit: BoxFit.fill,
+                                            progressIndicatorBuilder: (context,
+                                                    url, progress) =>
+                                                Center(
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    value: progress.progress,
+                                                    color: Theme.of(context)
+                                                        .primaryColorLight,
+                                                  ),
+                                                ),
+                                            imageUrl: state
+                                                .selectedModel!.coverUrl))),
                                 const SizedBox(width: 8.0),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(state.selectedModel!.title,
                                           style: const TextStyle(
-                                              fontWeight: FontWeight.w500, fontSize: 14.0)),
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 14.0)),
                                       const SizedBox(height: 2.0),
                                       Text(state.selectedModel!.artist,
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodyMedium!
                                               .copyWith(
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 12.0))
+                                                  fontWeight: FontWeight.w400,
+                                                  fontSize: 12.0))
                                     ],
                                   ),
                                 ),
@@ -189,7 +200,7 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                       ]),
                     );
                   },
-                )
+                ))
             ],
           );
         }

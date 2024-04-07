@@ -49,9 +49,9 @@ class _MusicListScreenState extends State<MusicListScreen> {
                     musicModel: musicModel,
                     onTap: () {
                       homeBloc.add(ListItemPress(selectedModel: musicModel));
-                      // playerBloc.add(PlayerStartOrResume(
-                      //     url: homeBloc.state.musicList[index].url,
-                      //     index: index));
+                      playerBloc.add(PlayerStartOrResume(
+                          url: homeBloc.state.musicList[index].url,
+                          selectedModel: homeBloc.state.musicList[index]));
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) =>
                               MusicDetailsScreen(musicModel: musicModel)));
@@ -67,99 +67,106 @@ class _MusicListScreenState extends State<MusicListScreen> {
                 itemCount: state.musicList.length,
               )),
               if (state.selectedModel != null)
-                BlocBuilder<PlayerBloc, MyPlayerState>(
-                  builder: (context, mState) {
-                    return Container(
-                      margin: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
-                      decoration: BoxDecoration(
-                        color: AppColors.darkThemePrimaryDark,
-                        borderRadius: BorderRadius.circular(12.0),
-                        boxShadow: const [
-                          BoxShadow(color: Color(0x55212121), blurRadius: 8.0),
-                        ],
-                      ),
-                      child: Column(children: [
-                        // Slider.adaptive(
-                        //     value: position.inSeconds.toDouble(),
-                        //     min: 0.0,
-                        //     max: duration.inSeconds.toDouble(),
-                        //     onChanged: (_) {}),
-                        Container(
-                          padding:
-                              const EdgeInsets.symmetric(horizontal: 8.0,vertical: 8.0),
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Container(
-                                    height: 60.0,
-                                    width: 60.0,
-                                    decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(8.0)),
-                                    child: CachedNetworkImage(
-                                        height: 400,
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        fit: BoxFit.fill,
-                                        progressIndicatorBuilder: (context, url,
-                                                progress) =>
-                                            Center(
-                                              child: CircularProgressIndicator(
-                                                value: progress.progress,
-                                                color: Theme.of(context)
-                                                    .primaryColorLight,
-                                              ),
-                                            ),
-                                        imageUrl:
-                                            state.selectedModel!.coverUrl)),
-                                const SizedBox(width: 8.0),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(state.selectedModel!.title,
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.w500, fontSize: 14.0)),
-                                      const SizedBox(height: 2.0),
-                                      Text(state.selectedModel!.artist,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyMedium!
-                                              .copyWith(
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 12.0))
-                                    ],
-                                  ),
-                                ),
-                                IconButton(
-                                    onPressed: () {
-                                      if (mState.isPlaying) {
-                                        if (homeBloc.state.selectedModel !=
-                                            null) {
-                                          playerBloc.add(PlayerOnPaused(
-                                              selectedModel: homeBloc
-                                                  .state.selectedModel!));
-                                        }
-                                      } else {
-                                        if (homeBloc.state.selectedModel !=
-                                            null) {
-                                          playerBloc.add(PlayerStartOrResume(
-                                              url: homeBloc
-                                                  .state.selectedModel!.url,
-                                              selectedModel: homeBloc
-                                                  .state.selectedModel!));
-                                        }
-                                      }
-                                    },
-                                    iconSize: 40.0,
-                                    icon: mState.isPlaying
-                                        ? const Icon(Icons.pause_rounded)
-                                        : const Icon(Icons.play_arrow))
-                              ]),
-                        )
-                      ]),
-                    );
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => MusicDetailsScreen(
+                            musicModel: state.selectedModel!)));
                   },
+                  child: BlocBuilder<PlayerBloc, MyPlayerState>(
+                    builder: (context, mState) {
+                      return Container(
+                        margin: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
+                        decoration: BoxDecoration(
+                          color: AppColors.darkThemePrimaryDark,
+                          borderRadius: BorderRadius.circular(12.0),
+                          boxShadow: const [
+                            BoxShadow(
+                                color: Color(0x55212121), blurRadius: 8.0),
+                          ],
+                        ),
+                        child: Column(children: [
+                          // Slider.adaptive(
+                          //     value: mState.position.inSeconds.toDouble(),
+                          //     min: 0.0,
+                          //     max: mState.duration.inSeconds.toDouble(),
+                          //     onChanged: (_) {}),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8.0, vertical: 8.0),
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                      height: 60.0,
+                                      width: 60.0,
+                                      child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(8),
+                                          child: CachedNetworkImage(
+                                          fit: BoxFit.fill,
+                                          progressIndicatorBuilder:
+                                              (context, url, progress) =>
+                                                  Center(
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                      value: progress.progress,
+                                                      color: Theme.of(context)
+                                                          .primaryColorLight,
+                                                    ),
+                                                  ),
+                                          imageUrl:
+                                              state.selectedModel!.coverUrl))),
+                                  const SizedBox(width: 8.0),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(state.selectedModel!.title,
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 14.0)),
+                                        const SizedBox(height: 2.0),
+                                        Text(state.selectedModel!.artist,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyMedium!
+                                                .copyWith(
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 12.0))
+                                      ],
+                                    ),
+                                  ),
+                                  IconButton(
+                                      onPressed: () {
+                                        if (mState.isPlaying) {
+                                          if (homeBloc.state.selectedModel !=
+                                              null) {
+                                            playerBloc.add(PlayerOnPaused(
+                                                selectedModel: homeBloc
+                                                    .state.selectedModel!));
+                                          }
+                                        } else {
+                                          if (homeBloc.state.selectedModel !=
+                                              null) {
+                                            playerBloc.add(PlayerStartOrResume(
+                                                url: homeBloc
+                                                    .state.selectedModel!.url,
+                                                selectedModel: homeBloc
+                                                    .state.selectedModel!));
+                                          }
+                                        }
+                                      },
+                                      iconSize: 40.0,
+                                      icon: mState.isPlaying
+                                          ? const Icon(Icons.pause_rounded)
+                                          : const Icon(Icons.play_arrow))
+                                ]),
+                          )
+                        ]),
+                      );
+                    },
+                  ),
                 )
             ],
           );
